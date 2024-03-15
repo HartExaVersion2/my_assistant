@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
+from common.browser import Browser
 from config import BROWSER, URLS
 import time
 import math
@@ -10,17 +11,8 @@ import math
 class StarsParser():
 
     def __init__(self):
-        self.driver = self.__get_web_driver()
-
-    def __get_web_driver(self) -> webdriver:
-        options = webdriver.ChromeOptions()
-        if not BROWSER.HEADLESS:
-            options.add_argument('headless')
-        if not BROWSER.SANDBOX:
-            options.add_argument('--no-sandbox')
-        driver = webdriver.Chrome(options=options)
-        driver.set_window_size(BROWSER.WINDOW_WIDTH, BROWSER.WINDOW_HEIGHT)
-        return driver
+        self.browser = Browser(BROWSER.WINDOW_HEIGHT, BROWSER.WINDOW_WIDTH, BROWSER.HEADLESS, BROWSER.SANDBOX)
+        self.driver = self.browser.get_driver()
 
     def authorize(self, login, password):
         self.driver = webdriver.Chrome()

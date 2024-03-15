@@ -1,15 +1,10 @@
-from selenium import webdriver
+from common.browser import Browser
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
 import os
 
-
-options = webdriver.ChromeOptions()
-options.add_argument('headless')
-options.add_argument('--no-sandbox')
-
-def authorize(login, password):
+def authorize(login, password, driiver):
 
     driver.get("https://lms.algoritmika.org/auth/v3/login#group-closest-lesson")
     driver.set_window_size(1024, 768)
@@ -26,7 +21,7 @@ def authorize(login, password):
     time.sleep(1)
 
 
-def check_messages() -> bool:
+def check_messages(driver) -> bool:
     counter = driver.find_element(By.CSS_SELECTOR, "div.algo-journal-counter")
     if counter.text != '' and int(counter.text) > 0:
         return True
@@ -37,10 +32,12 @@ names = ['КаринОчка', 'Прилепский']
 logins = [os.environ.get("AlgKarenLogin"), os.environ.get("AlgDimLogin")]
 passwords = [os.environ.get("AlgKarenPassword"), os.environ.get("AlgDimPassword")]
 for i in range(len(logins)):
-    driver = webdriver.Chrome(options=options)
-    authorize(logins[i], passwords[i])
-    if check_messages():
+    browser = Browser()
+    driver = browser.get_driver()
+    authorize(logins[i], passwords[i], driver)
+    if check_messages(driver):
         print(names[i], 'игнорщик')
     else:
         print(names[i], 'всо прочитал')
+    browser.close()
 
