@@ -64,7 +64,9 @@ def processing_problem_with_homework():
         driver.execute_script("arguments[0].click();", element)
         time.sleep(1)
         main_window = driver.current_window_handle
+        time.sleep(1)
         all_windows = driver.window_handles
+        time.sleep(1)
         journal = [window for window in all_windows if window != main_window][0]
         driver.switch_to.window(journal)
         time.sleep(1)
