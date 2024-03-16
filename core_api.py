@@ -1,26 +1,51 @@
 from fastapi import FastAPI, HTTPException
+from common.datamodel import WorkReports
 
 app = FastAPI()
 
 # дз в дневник ру выдано
-@app.get("/event/dnevnik/homework")
-async def get_events():
-    return None
+@app.post("/event/dnevnik/homework")
+async def get_events(response):
+    response_data = response.json()
+    response_model = WorkReports.parse_obj(response_data)
+    if response_model.error == 0:
+        message = response_model.text
+    else:
+        message = 'Ошибка сервиса: \n' + response_model.text
+    # сообщение в бота
 
 # оценки в дневник ру выставлены
-@app.get("/event/dnevnik/marks")
-async def get_events():
-    return None
+@app.post("/event/dnevnik/marks")
+async def get_events(response):
+    response_data = response.json()
+    response_model = WorkReports.parse_obj(response_data)
+    if response_model.error == 0:
+        message = response_model.text
+    else:
+        message = 'Ошибка сервиса: \n' + response_model.text
+    # сообщение в бота
 
 # "звёздочки для детей подсчитаны"
-@app.get("/event/algoritmika/stars")
-async def get_events():
-    return None
+@app.post("/event/algoritmika/stars")
+async def get_events(response):
+    response_data = response.json()
+    response_model = WorkReports.parse_obj(response_data)
+    if response_model.error == 0:
+        message = response_model.text
+    else:
+        message = 'Ошибка сервиса: \n' + response_model.text
+    # сообщение в бота
 
 # новое сообщение в чате алгоритмики
-@app.get("/event/algoritmika/new_message")
-async def get_events():
-    return None
+@app.post("/event/algoritmika/new_message")
+async def get_events(response):
+    response_data = response.json()
+    response_model = WorkReports.parse_obj(response_data)
+    if response_model.error == 0:
+        message = response_model.text
+    else:
+        message = 'Ошибка сервиса: \n' + response_model.text
+    # сообщение в бота
 
 if __name__ == "__main__":
     import uvicorn

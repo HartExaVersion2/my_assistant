@@ -1,13 +1,26 @@
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from config import BROWSER, URLS
 from common.browser import Browser
 from common.logger import Log
 from common.errors import UnknownError
+from common.datamodel import WorkReports
+import requests
 import time
 import os
 
 logger = Log('dnevnik_ru_writer', 'DnevnikRu/dnevnik_ru_writer.py', 'dnevnik_ru_writer')
 
+
+def __send_report(error_code, text):
+    try:
+        report = WorkReports(error=error_code, text=text)
+        json_data = report.json_data.dict()
+        requests.post(URLS.CORE_API, json=json_data)
+    except Exception as error:
+        message = 'function {} error {}'.format(__send_report.__name__, error)
+        logger.error(message)
+        raise UnknownError
 
 
 def get_homework() -> str:
@@ -30,7 +43,7 @@ def get_homework() -> str:
 
 def authorize():
     try:
-        driver.get("https://login.dnevnik.ru/login/esia/tambovskaya")
+        driver.get(URLS.AUTH)
         time.sleep(5)
         element_login = driver.find_element(By.NAME, 'login')
         element_login.send_keys(os.environ.get("DnevnikRuLogin"))
@@ -102,12 +115,14 @@ def processing_problem_with_homework():
 
 try:
     logger.info('START dnevnik ru writer')
-    browser = Browser(win_width=1700)
+    browser = Browser(BROWSER.WINDOW_HEIGHT, BROWSER.WINDOW_WIDTH, BROWSER.HEADLESS, BROWSER.SANDBOX)
     driver = browser.get_driver()
     authorize()
     processing_lessons_without_marks()
     processing_problem_with_homework()
+    __send_report(0, 'dnevnik ru  writer завершил заполнение дневника')
     logger.info('END dnevnik ru writer')
 except Exception as error:
+    __send_report(1, 'В dnevnik ru writer произошла ошибка')
     message = 'ДневникуРу пизда. Поднимай меня. error {}'.format(error)
     logger.error(message)
