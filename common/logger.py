@@ -69,7 +69,7 @@ class Log:
         try:
             path = os.path.realpath(self.program_path)
             try:
-                while not os.path.exists(path + '/core_api.py'):
+                while not os.path.exists(path + '/test.py'):
                     path = os.path.dirname(path)
             except:
                 path = self.program_path

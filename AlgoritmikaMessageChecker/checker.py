@@ -58,19 +58,18 @@ def check_messages(driver) -> bool:
 
 try:
     logger.info('START checker.py')
-    names = ['КаринОчка', 'Прилепский']
-    logins = [os.environ.get("AlgKarenLogin"), os.environ.get("AlgDimLogin")]
-    passwords = [os.environ.get("AlgKarenPassword"), os.environ.get("AlgDimPassword")]
+    names = ['Прилепский']
+    logins = [os.environ.get("AlgDimLogin")]
+    passwords = [os.environ.get("AlgDimPassword")]
     for i in range(len(logins)):
         browser = Browser(BROWSER.WINDOW_HEIGHT, BROWSER.WINDOW_WIDTH, BROWSER.HEADLESS, BROWSER.SANDBOX)
         driver = browser.get_driver()
         authorize(logins[i], passwords[i], driver)
-        if check_messages(driver):
-            __send_report(error_code=0, text='{}. У вас новое сообщение на платформе!'.format(names[i]))
+        # if check_messages(driver):
+        #     __send_report(error_code=0, text='{}. У вас новое сообщение на платформе!'.format(names[i]))
         browser.close()
     logger.info('END checker.py')
-    report = WorkReports(error=0, text='У вас новое сообщение на платформе!')
 except Exception as error:
-    __send_report(error_code=1, text='В приложении checker произошла ошибка!')
+    # __send_report(error_code=1, text='В приложении checker произошла ошибка!')
     logger.error('checker.py error {}'.format(error))
 

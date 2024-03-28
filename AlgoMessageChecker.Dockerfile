@@ -20,16 +20,22 @@ RUN mkdir "chromedriver" \
 # установка библиотек python
 RUN pip install --upgrade pip
 RUN pip install selenium
+RUN pip install pydantic
+RUN pip install requests
 
 # установкак cron
 RUN apt-get update && apt-get -y install cron
 
 WORKDIR /app
+RUN mkdir "common"
 
-COPY cronfile /etc/cron.d/crontab
-COPY . /app
+COPY AlgoritmikaMessageChecker/cronfile /etc/cron.d/crontab
+COPY AlgoritmikaMessageChecker .
+COPY common ./common
+COPY test.py .
 
 RUN chmod 0644 /etc/cron.d/crontab
 
 # run crond as main process of container
-CMD cron && python3 /app/main.py
+
+CMD python3 /app/checker.py
