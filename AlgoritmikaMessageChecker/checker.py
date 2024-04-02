@@ -15,7 +15,7 @@ logger = Log('checker', 'AlgoritmikaMessageChecker/checker.py', 'checker')
 def __send_report(error_code, text):
     try:
         report = WorkReports(error=error_code, text=text)
-        json_data = report.json_data.dict()
+        json_data = report.dict()
         requests.post(URLS.CORE_API, json=json_data)
     except Exception as error:
         message = 'function {} error {}'.format(__send_report.__name__, error)
@@ -65,11 +65,11 @@ try:
         browser = Browser(BROWSER.WINDOW_HEIGHT, BROWSER.WINDOW_WIDTH, BROWSER.HEADLESS, BROWSER.SANDBOX)
         driver = browser.get_driver()
         authorize(logins[i], passwords[i], driver)
-        # if check_messages(driver):
-        #     __send_report(error_code=0, text='{}. У вас новое сообщение на платформе!'.format(names[i]))
+        if check_messages(driver):
+            __send_report(error_code=0, text='{}. У вас новое сообщение на платформе!'.format(names[i]))
         browser.close()
     logger.info('END checker.py')
 except Exception as error:
-    # __send_report(error_code=1, text='В приложении checker произошла ошибка!')
+    __send_report(error_code=1, text='В приложении checker произошла ошибка!')
     logger.error('checker.py error {}'.format(error))
 

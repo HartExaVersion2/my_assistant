@@ -10,7 +10,7 @@ import requests
 def __send_report(error_code, text):
     try:
         report = WorkReports(error=error_code, text=text)
-        json_data = report.json_data.dict()
+        json_data = report.dict()
         requests.post(URLS.CORE_API, json=json_data)
     except Exception as error:
         message = 'function {} error {}'.format(__send_report.__name__, error)
@@ -27,16 +27,16 @@ try:
     dict_stars = stars_parser.parse_stars()
     work_with_table = FillTable('Stars.xlsx', logger)
     work_with_table.fill_table(dict_stars)
-    # __send_report(0, 'Звёзды подсчитаны')
+    __send_report(0, 'Звёзды подсчитаны')
     logger.info('END function main stars parser')
 except InitError as error:
     message = 'Init Error {}'.format(error)
     logger.error(message)
-    #__send_report(0, 'В приложении starts произошла ошибка')
+    __send_report(0, 'В приложении starts произошла ошибка')
 except UnknownError as error:
     logger.error(error)
-    #__send_report(0, 'В приложении starts произошла ошибка')
+    __send_report(0, 'В приложении starts произошла ошибка')
 except Exception as error:
     message = 'error in main function. Error {}'.format(error)
     logger.error(message)
-    #__send_report(0, 'В приложении starts произошла ошибка')
+    __send_report(0, 'В приложении starts произошла ошибка')

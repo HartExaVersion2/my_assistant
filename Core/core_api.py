@@ -1,51 +1,53 @@
 from fastapi import FastAPI, HTTPException
 from common.datamodel import WorkReports
+from Bot.assistant_bot import send_message_to_user
+from pydantic import parse_obj_as
 
 app = FastAPI()
 
 # дз в дневник ру выдано
 @app.post("/event/dnevnik/homework")
-async def get_events(response):
-    response_data = response.json()
-    response_model = WorkReports.parse_obj(response_data)
+async def get_events(request: WorkReports):
+    response_data = request.dict()
+    response_model = parse_obj_as(WorkReports, response_data)
     if response_model.error == 0:
         message = response_model.text
     else:
         message = 'Ошибка сервиса: \n' + response_model.text
-    # сообщение в бота
+    send_message_to_user(message)
 
 # оценки в дневник ру выставлены
 @app.post("/event/dnevnik/marks")
-async def get_events(response):
-    response_data = response.json()
-    response_model = WorkReports.parse_obj(response_data)
+async def get_events(request: WorkReports):
+    response_data = request.dict()
+    response_model = parse_obj_as(WorkReports, response_data)
     if response_model.error == 0:
         message = response_model.text
     else:
         message = 'Ошибка сервиса: \n' + response_model.text
-    # сообщение в бота
+    send_message_to_user(message)
 
 # "звёздочки для детей подсчитаны"
 @app.post("/event/algoritmika/stars")
-async def get_events(response):
-    response_data = response.json()
-    response_model = WorkReports.parse_obj(response_data)
+async def get_events(request: WorkReports):
+    response_data = request.dict()
+    response_model = parse_obj_as(WorkReports, response_data)
     if response_model.error == 0:
         message = response_model.text
     else:
         message = 'Ошибка сервиса: \n' + response_model.text
-    # сообщение в бота
+    send_message_to_user(message)
 
 # новое сообщение в чате алгоритмики
 @app.post("/event/algoritmika/new_message")
-async def get_events(response):
-    response_data = response.json()
-    response_model = WorkReports.parse_obj(response_data)
+async def get_events(request: WorkReports):
+    response_data = request.dict()
+    response_model = parse_obj_as(WorkReports, response_data)
     if response_model.error == 0:
         message = response_model.text
     else:
         message = 'Ошибка сервиса: \n' + response_model.text
-    # сообщение в бота
+    send_message_to_user(message)
 
 if __name__ == "__main__":
     import uvicorn

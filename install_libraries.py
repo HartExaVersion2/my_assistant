@@ -2,7 +2,7 @@ import sys
 import subprocess
 
 # Библиотеки, необходимые для работы проекта
-LIST_LIBRARIES = ['uvicorn', 'FastApi', 'requests', 'selenium', 'bs4', 'openpyxl']
+LIST_LIBRARIES = ['uvicorn', 'FastApi', 'requests', 'selenium', 'bs4', 'openpyxl', 'pydantic', 'telebot']
 
 def install_packages(package_list):
     for package in package_list:

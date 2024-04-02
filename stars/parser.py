@@ -22,8 +22,6 @@ class StarsParser():
 
     def authorize(self, login, password):
         try:
-            self.driver = webdriver.Chrome()
-            self.driver.set_window_size(1024, 768)
             self.driver.get(URLS.AUTH)
             element_login = self.driver.find_element(By.ID, 'login')
             element_login.send_keys(login)

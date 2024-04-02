@@ -8,4 +8,4 @@ class BROWSER():
 class URLS():
 
     AUTH = "https://login.dnevnik.ru/login/esia/tambovskaya"
-    CORE_API = ""
+    CORE_API = "http://core:8000/event/dnevnik/homework"

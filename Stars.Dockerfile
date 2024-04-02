@@ -23,6 +23,7 @@ RUN pip install selenium
 RUN pip install openpyxl
 RUN pip install pydantic
 RUN pip install requests
+RUN pip install bs4
 
 # установкак cron
 RUN apt-get update && apt-get -y install cron
